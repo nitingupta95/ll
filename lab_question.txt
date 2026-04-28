@@ -1,0 +1,102 @@
+lab1
+    Write a graphics program to display Circle, ellipse, lines (parallel and
+    perpendicular to each other), concentric circles, etc
+
+
+
+
+
+lab2
+    Write a graphics program to display Circle, ellipse, lines (parallel and
+    perpendicular to each other), concentric circles, etc
+
+
+
+
+
+lab3
+    Problem 1: The Parametric Circle Generator
+        Task: Write an OpenGL program that renders a solid, filled circle.
+        Requirements:
+        1.	Mathematical Approach: Use the parametric equations x = r \cdot \cos(\theta) and y = r \cdot \sin(\theta) to generate vertex data.
+        2.	Dynamic Segments: Your implementation should allow a variable int segments to define how many vertices are used.
+        3.	Primitive Choice: Use GL_TRIANGLE_FAN to render the circle. Ensure the first vertex is the center (0, 0, 0).
+        4.	Interactive Feature:
+            ○	Press the UP arrow key to increase the number of segments (making it smoother).
+            ○	Press the DOWN arrow key to decrease segments (observing how it eventually looks like a hexagon, square, or triangle).
+        5.	Coloring: The center vertex should be one color (e.g., Red) and the perimeter vertices should be another color (e.g., Blue), creating a gradient effect.
+    Problem 2: The Adjustable Ellipse & Aspect Ratio
+        Task: Create a program that renders an ellipse and maintains its proportions during window resizing.
+        Requirements:
+        1.	The Ellipse Formula: Modify your circle generator to use separate radii for X and Y (Semi-major a and Semi-minor b).
+        2.	User Input: Use keyboard inputs to allow the user to increase/decrease the width (a) and height (b) of the ellipse independently.
+        3.	Aspect Ratio Correction: * Implement a Projection Matrix (or modify your vertex shader) to ensure that if a = b, the shape appears as a perfect circle regardless of whether the window is a wide rectangle or a tall one.
+            ○	Without this correction, resizing the window should visibly "stretch" the ellipse; with it, the ellipse should remain consistent.
+        4.	Boundary Box (Optional/Bonus): Render a GL_LINE_LOOP rectangle that perfectly bounds the ellipse to demonstrate your understanding of its spatial limits.
+
+
+
+
+
+LAB4
+    Question 1: Geometric Composition (The "Delivery Truck")
+    Objective: Test understanding of coordinate systems, primitive shapes and color filling.
+    Problem Statement: Write a C/C++ program to draw a 2D side-view of a "Delivery Truck".
+        Requirements:
+        1. Body: Draw a rectangular cargo area filled with Blue.
+        2. Cabin: Draw a square driver's cabin attached to the front filled with Red.
+        3. Wheels: Draw two circles at the bottom filled with Dark Gray.
+        4. Road: Draw a line beneath the wheels.
+        5. Text: Add the label "CG LAB" inside the cargo area in White.
+
+    Question 2: Loops and Logic (The "Archery Target")
+    Objective: Test the use of loops, concentric geometry and mathematical centering.
+    Problem Statement: Write a C/C++ program to draw a standard 5-ring Archery Target in
+    the center of the screen. You must use a loop to generate the rings efficiently rather than
+    writing 5 separate blocks of code.
+        Requirements:
+        1. Geometry: Draw 5 concentric circles (sharing the same center point).
+        2. Colors: The rings must be filled with the following standard archery colors (from outer to
+        inner):
+            ○ White (Outer ring)
+            ○ Black
+            ○ Blue
+            ○ Red
+            ○ Yellow (Center Bullseye)
+        3. Logic: Start with the largest radius and decrease the radius by a fixed amount (e.g., 30
+        pixels) in each iteration of the loop.
+        4. Scoring: (Optional) Display the score values (10, 20, 30, 40, 50) inside the respective
+        rings.
+        Hint:
+            ● Use arrays to store the color codes.
+            ● Remember that when painting overlapping shapes, you must draw the largest shape first
+        and the smallest shape last.
+
+
+
+
+
+
+lab5
+    1.To implement the various 2D transformations like translation, scaling, rotation, shearing.
+    2.Write a C-program for performing the basic transformations such as translation, Scaling, Rotation for a given 3D object.
+
+
+
+lab6
+    1. Write a program to input a line (two end points) and a window (position of below left point and above right point) and clip the line with respect to the window using Cohen Sutherland Algorithm. Show all the conditions:
+        (a) line presents completely inside the window
+        (b) line presents completely outside the window
+        (c) line intersects the window boundary.
+    2. Implement Liang Barsky line clipping Algorithm. The clipping window is a rectangle having coordinates, X_min=2, X_max=4, Y_min=2 and Y_max=4.
+    Check you program for each cases.
+    3. Implement Bresenham’s Line drawing algorithm for all types of slope.
+    4. Create and rotate a triangle about the origin and a fixed point.
+    5. Program to draw a color cube and allow the user to move the camera suitably to experiment with perspective viewing.
+    6. Program to animate a flag using Bezier curve algorithm.
+    7. Write a program to implement to clip a polygon using Cohen-Sutherland – Hodgeman algorithm
+
+
+
+gcc program.c -o program -lfreeglut -lglu32 -lopengl32
+program.exe
