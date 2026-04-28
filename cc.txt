@@ -1,0 +1,966 @@
+graphics
+
+// Truck 
+#include <GL/freeglut.h>
+#include <cmath>        // For cos() and sin()
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // ---------------- ROAD ----------------
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glBegin(GL_LINES);
+        glVertex2f(-0.9f, -0.5f);
+        glVertex2f(0.9f, -0.5f);
+    glEnd();
+
+    // ---------------- CARGO (BLUE) ----------------
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glBegin(GL_QUADS);
+        glVertex2f(-0.6f, -0.2f);
+        glVertex2f(0.1f, -0.2f);
+        glVertex2f(0.1f, 0.3f);
+        glVertex2f(-0.6f, 0.3f);
+    glEnd();
+
+    // ---------------- CABIN (RED) ----------------
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glBegin(GL_QUADS);
+        glVertex2f(0.1f, -0.2f);
+        glVertex2f(0.4f, -0.2f);
+        glVertex2f(0.4f, 0.2f);
+        glVertex2f(0.1f, 0.2f);
+    glEnd();
+
+    // ---------------- WHEELS ----------------
+    glColor3f(0.3f, 0.3f, 0.3f);
+
+    for (int i = 0; i < 2; i++) {
+        float cx = (i == 0) ? -0.4f : 0.2f;
+        float cy = -0.5f;
+        float r = 0.1f;
+
+        glBegin(GL_TRIANGLE_FAN);
+        for (int j = 0; j <= 100; j++) {
+            float angle = 2.0f * 3.1416f * j / 100.0f;
+            glVertex2f(cx + r * cos(angle), cy + r * sin(angle));
+        }
+        glEnd();
+    }
+
+    // ---------------- TEXT ----------------
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glRasterPos2f(-0.4f, 0.05f);
+    const char* text = "CG LAB";
+    for (const char* c = text; *c != '\0'; c++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+    }
+
+    glutSwapBuffers();
+}
+
+void init() {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-1.0, 1.0, -1.0, 1.0);   // Set coordinate system
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Delivery Truck - OpenGL");
+
+    init();
+    glutDisplayFunc(display);
+
+    glutMainLoop();
+    return 0;
+}
+
+
+// archer graphics
+#include <GL/freeglut.h>
+#include <cmath>        // For cos() and sin()
+
+void drawCircle(float cx, float cy, float r, float R, float G, float B) {
+    glColor3f(R, G, B);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(cx, cy);        // Center
+
+        for (int i = 0; i <= 100; i++) {
+            float angle = 2.0f * 3.1416f * i / 100.0f;
+            float x = cx + r * cos(angle);
+            float y = cy + r * sin(angle);
+            glVertex2f(x, y);
+        }
+    glEnd();
+}
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    float radius = 0.8f;
+    float step = 0.16f;
+
+    // Colors: White, Black, Blue, Red, Yellow
+    float colors[5][3] = {
+        {1.0f, 1.0f, 1.0f},
+        {0.0f, 0.0f, 0.0f},
+        {0.0f, 0.0f, 1.0f},
+        {1.0f, 0.0f, 0.0f},
+        {1.0f, 1.0f, 0.0f}
+    };
+
+    for (int i = 0; i < 5; i++) {
+        drawCircle(0.0f, 0.0f, radius, 
+                   colors[i][0], colors[i][1], colors[i][2]);
+        radius -= step;
+    }
+
+    // Center Text "50"
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glRasterPos2f(-0.05f, -0.02f);
+    const char* text = "50";
+    for (const char* c = text; *c != '\0'; c++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+    }
+
+    glutSwapBuffers();
+}
+
+void init() {
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-1.0, 1.0, -1.0, 1.0);   // Important!
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Archery Target");
+
+    init();
+    glutDisplayFunc(display);
+
+    glutMainLoop();
+    return 0;
+}
+
+
+// circle
+#include <GL/freeglut.h>
+#include <cmath>
+
+void drawCircle(float cx, float cy, float r) {
+    glColor3f(1.0f, 0.5f, 0.0f); // Orange fill
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(cx, cy);
+
+    for(int i = 0; i <= 100; i++) {
+        float angle = 2 * 3.1416 * i / 100;
+        glVertex2f(cx + r * cos(angle), cy + r * sin(angle));
+    }
+    glEnd();
+
+    // Border
+    glLineWidth(3);
+    glColor3f(1, 1, 1);
+    glBegin(GL_LINE_LOOP);
+    for(int i = 0; i <= 100; i++) {
+        float angle = 2 * 3.1416 * i / 100;
+        glVertex2f(cx + r * cos(angle), cy + r * sin(angle));
+    }
+    glEnd();
+}
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    drawCircle(0.0f, 0.0f, 0.4f);
+    glutSwapBuffers();
+}
+
+void init() {
+    glClearColor(0, 0, 0, 1);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-1, 1, -1, 1);
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Circle");
+    init();
+    glutDisplayFunc(display);
+    glutMainLoop();
+    return 0;
+}
+
+
+
+// ellipse
+#include <GL/freeglut.h>
+#include <cmath>
+
+void drawEllipse(float cx, float cy, float a, float b) {
+    glColor3f(0.0f, 0.7f, 1.0f); // Cyan fill
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(cx, cy);
+
+    for(int i = 0; i <= 100; i++) {
+        float angle = 2 * 3.1416 * i / 100;
+        glVertex2f(cx + a * cos(angle), cy + b * sin(angle));
+    }
+    glEnd();
+
+    // Border
+    glLineWidth(3);
+    glColor3f(1, 1, 1);
+    glBegin(GL_LINE_LOOP);
+    for(int i = 0; i <= 100; i++) {
+        float angle = 2 * 3.1416 * i / 100;
+        glVertex2f(cx + a * cos(angle), cy + b * sin(angle));
+    }
+    glEnd();
+}
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    drawEllipse(0.0f, 0.0f, 0.5f, 0.3f);
+    glutSwapBuffers();
+}
+
+void init() {
+    glClearColor(0, 0, 0, 1);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-1, 1, -1, 1);
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Ellipse");
+    init();
+    glutDisplayFunc(display);
+    glutMainLoop();
+    return 0;
+}
+
+
+
+
+// Bresenham Line Drawing Algorithm
+
+#include <GL/freeglut.h>
+#include <iostream>
+#include <cmath>
+
+int x_start = 100;
+int y_start = 100;
+int x_end   = 600;
+int y_end   = 400;
+
+// -----------------------------------
+// -----------------------------------
+void drawLineBresenham(int x1, int y1, int x2, int y2)
+{
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+
+    int sx = (x1 < x2) ? 1 : -1;
+    int sy = (y1 < y2) ? 1 : -1;
+
+    int err = dx - dy;
+
+    glBegin(GL_POINTS);
+
+    while (true)
+    {
+        glVertex2i(x1, y1);
+
+        if (x1 == x2 && y1 == y2)
+            break;
+
+        int e2 = 2 * err;
+
+        if (e2 > -dy)
+        {
+            err -= dy;
+            x1 += sx;
+        }
+
+        if (e2 < dx)
+        {
+            err += dx;
+            y1 += sy;
+        }
+    }
+
+    glEnd();
+}
+
+// -----------------------------------
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glColor3f(1.0f, 1.0f, 1.0f);  // White line
+    drawLineBresenham(x_start, y_start, x_end, y_end);
+
+    glFlush();
+}
+
+// -----------------------------------
+void init()
+{
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glPointSize(2.0f);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, 800, 0, 600);  // Pixel coordinate system
+}
+
+// -----------------------------------
+int main(int argc, char** argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Bresenham Line Drawing Algorithm");
+
+    init();
+    glutDisplayFunc(display);
+    glutMainLoop();
+
+    return 0;
+}
+
+
+// DDA line drawing
+#include <GL/freeglut.h>
+#include <cmath>
+#include <algorithm>
+
+float x_start = -0.8f;
+float y_start = -0.5f;
+float x_end   =  0.7f;
+float y_end   =  0.6f;
+
+void drawLineDDA(float x1, float y1, float x2, float y2)
+{
+    float dx = x2 - x1;
+    float dy = y2 - y1;
+
+    int steps = (int)(std::max(std::abs(dx), std::abs(dy)) * 500);
+
+    float xIncrement = dx / steps;
+    float yIncrement = dy / steps;
+
+    float x = x1;
+    float y = y1;
+
+    glBegin(GL_POINTS);
+    for (int i = 0; i <= steps; i++)
+    {
+        glVertex2f(x, y);
+        x += xIncrement;
+        y += yIncrement;
+    }
+    glEnd();
+}
+
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    drawLineDDA(x_start, y_start, x_end, y_end);
+    glFlush();
+}
+
+void init()
+{
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glPointSize(2.0f);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-1, 1, -1, 1);
+}
+
+int main(int argc, char** argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("DDA Line Drawing Algorithm");
+
+    init();
+    glutDisplayFunc(display);
+    glutMainLoop();
+
+    return 0;
+}
+
+
+// concentric ellipse
+#include <GL/freeglut.h>
+#include <cmath>
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    float rx = 0.1f;  // initial radius X
+    float ry = 0.05f; // initial radius Y
+
+    for(int j = 0; j < 5; j++) {
+        // Optional: different colors
+        glColor3f(j * 0.2f, 1.0f - j * 0.2f, 0.5f);
+
+        glBegin(GL_LINE_LOOP);
+        for(int i = 0; i <= 360; i++) {
+            float angle = i * 3.1416 / 180.0; // degrees → radians
+            float x = rx * cos(angle);
+            float y = ry * sin(angle);
+            glVertex2f(x, y);
+        }
+        glEnd();
+
+        // Increase size for next ellipse
+        rx += 0.1f;
+        ry += 0.1f;
+    }
+
+    glutSwapBuffers();
+}
+
+void init() {
+    glClearColor(0, 0, 0, 1);
+    gluOrtho2D(-1, 1, -1, 1);
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Concentric Ellipses");
+
+    init();
+    glutDisplayFunc(display);
+    glutMainLoop();
+}
+
+
+// resizable ellipse
+#include <GL/freeglut.h>
+#include <cmath>
+
+// Global variables (IMPORTANT)
+float w = 0.5f;
+float h = 0.3f;
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glColor3f(0.0f, 0.7f, 1.0f);
+
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(0.0f, 0.0f);
+
+    for(int i = 0; i <= 360; i++) {
+        float angle = i * 3.1416 / 180.0;
+        float x = w * cos(angle);
+        float y = h * sin(angle);
+        glVertex2f(x, y);
+    }
+    glEnd();
+
+    glutSwapBuffers();
+}
+
+// Handle arrow keys
+void specialKeys(int key, int x, int y) {
+    switch(key) {
+        case GLUT_KEY_RIGHT: w += 0.05f; break;
+        case GLUT_KEY_LEFT:  w -= 0.05f; break;
+        case GLUT_KEY_UP:    h += 0.05f; break;
+        case GLUT_KEY_DOWN:  h -= 0.05f; break;
+    }
+
+    glutPostRedisplay(); // redraw
+}
+
+void init() {
+    glClearColor(0, 0, 0, 1);
+    gluOrtho2D(-1, 1, -1, 1);
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Resizable Ellipse");
+
+    init();
+    glutDisplayFunc(display);
+    glutSpecialFunc(specialKeys); // important
+    glutMainLoop();
+}
+
+
+
+// cohen sutherland algo
+#include <GL/freeglut.h>
+#include <iostream>
+using namespace std;
+
+// Window boundaries
+float xmin, xmax, ymin, ymax;
+
+// Original line endpoints (never modified)
+float lx1, ly1, lx2, ly2;
+
+// Clipped line endpoints (computed once)
+float cx1, cy1, cx2, cy2;
+bool clipped = false;
+bool clipComputed = false;
+
+enum {INSIDE = 0, LEFT = 1, RIGHT = 2, BOTTOM = 4, TOP = 8};
+
+int computeCode(float x, float y) {
+    int code = INSIDE;
+
+    if (x < xmin) code |= LEFT;
+    else if (x > xmax) code |= RIGHT;
+
+    if (y < ymin) code |= BOTTOM;
+    else if (y > ymax) code |= TOP;
+
+    return code;
+}
+
+bool cohenSutherland(float x1, float y1, float x2, float y2, float &ox1, float &oy1, float &ox2, float &oy2) {
+    int code1 = computeCode(x1, y1);
+    int code2 = computeCode(x2, y2);
+
+    bool accept = false;
+
+    while (true) {
+        if ((code1 == 0) && (code2 == 0)) {
+            cout << "Case (a): Line completely inside\n";
+            accept = true;
+            break;
+        }
+        else if (code1 & code2) {
+            cout << "Case (b): Line completely outside\n";
+            break;
+        }
+        else {
+            cout << "Case (c): Line intersects window\n";
+
+            float x, y;
+            int code_out = code1 ? code1 : code2;
+
+            if (code_out & TOP) {
+                x = x1 + (x2 - x1) * (ymax - y1) / (y2 - y1);
+                y = ymax;
+            }
+            else if (code_out & BOTTOM) {
+                x = x1 + (x2 - x1) * (ymin - y1) / (y2 - y1);
+                y = ymin;
+            }
+            else if (code_out & RIGHT) {
+                y = y1 + (y2 - y1) * (xmax - x1) / (x2 - x1);
+                x = xmax;
+            }
+            else { // LEFT
+                y = y1 + (y2 - y1) * (xmin - x1) / (x2 - x1);
+                x = xmin;
+            }
+
+            if (code_out == code1) {
+                x1 = x; y1 = y;
+                code1 = computeCode(x1, y1);
+            } else {
+                x2 = x; y2 = y;
+                code2 = computeCode(x2, y2);
+            }
+        }
+    }
+
+    ox1 = x1; oy1 = y1;
+    ox2 = x2; oy2 = y2;
+    return accept;
+}
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Draw clipping window (white)
+    glColor3f(1, 1, 1);
+    glBegin(GL_LINE_LOOP);
+    glVertex2f(xmin, ymin);
+    glVertex2f(xmax, ymin);
+    glVertex2f(xmax, ymax);
+    glVertex2f(xmin, ymax);
+    glEnd();
+
+    // Draw original line (yellow)
+    glColor3f(1, 1, 0);
+    glBegin(GL_LINES);
+    glVertex2f(lx1, ly1);
+    glVertex2f(lx2, ly2);
+    glEnd();
+
+    // Draw clipped line (red) if accepted
+    if (clipped) {
+        glColor3f(1, 0, 0);
+        glBegin(GL_LINES);
+        glVertex2f(cx1, cy1);
+        glVertex2f(cx2, cy2);
+        glEnd();
+    }
+
+    glFlush();
+}
+
+void init() {
+    glClearColor(0, 0, 0, 1);
+    // Set ortho to match your coordinate range (e.g., 0 to 500)
+    gluOrtho2D(0, 500, 0, 500);
+}
+
+int main(int argc, char** argv) {
+    cout << "Enter window (xmin ymin xmax ymax): ";
+    cin >> xmin >> ymin >> xmax >> ymax;
+
+    cout << "Enter line endpoints (x1 y1 x2 y2): ";
+    cin >> lx1 >> ly1 >> lx2 >> ly2;
+
+    // Compute clipping ONCE before entering main loop
+    clipped = cohenSutherland(lx1, ly1, lx2, ly2, cx1, cy1, cx2, cy2);
+    clipComputed = true;
+
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Interactive Cohen-Sutherland");
+
+    init();
+    glutDisplayFunc(display);
+    glutMainLoop();
+
+    return 0;
+}
+
+// line inside case
+// input for window size 100 100 400 400
+// line start and end 150 150 250 250
+
+// line outside case
+// input for window size 100 100 400 400
+// line start and end 50 50 450 450
+
+
+
+// liang-barsky
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+void liangBarsky(float x1, float y1, float x2, float y2) {
+    float xmin = 2, xmax = 4, ymin = 2, ymax = 4;
+    float dx = x2 - x1, dy = y2 - y1;
+    
+    // Initialize parameters
+    float t0 = 0.0f, t1 = 1.0f;
+    
+    // Array of p and q values
+    float p[4], q[4];
+    p[0] = -dx;  q[0] = x1 - xmin;  // Left boundary
+    p[1] =  dx;  q[1] = xmax - x1;  // Right boundary
+    p[2] = -dy;  q[2] = y1 - ymin;  // Bottom boundary
+    p[3] =  dy;  q[3] = ymax - y1;  // Top boundary
+    
+    cout << "Original line: (" << x1 << "," << y1 << ") to (" << x2 << "," << y2 << ")" << endl;
+    cout << "Clipping window: [" << xmin << "," << xmax << "] x [" << ymin << "," << ymax << "]" << endl << endl;
+    
+    for(int i = 0; i < 4; i++) {
+        if(p[i] == 0) {
+            // Line is parallel to this boundary
+            if(q[i] < 0) {
+                cout << "Line is completely outside (parallel case)" << endl;
+                return;
+            }
+        } else {
+            float t = q[i] / p[i];
+            
+            if(p[i] < 0) {
+                // Entering boundary
+                t0 = max(t0, t);
+            } else {
+                // Exiting boundary
+                t1 = min(t1, t);
+            }
+        }
+    }
+    
+    // Check if clipped line segment is valid
+    if(t0 <= t1) {
+        float new_x1 = x1 + t0 * dx;
+        float new_y1 = y1 + t0 * dy;
+        float new_x2 = x1 + t1 * dx;
+        float new_y2 = y1 + t1 * dy;
+        
+        cout << "Clipping successful!" << endl;
+        cout << "t0 = " << t0 << ", t1 = " << t1 << endl;
+        cout << "Clipped Line: (" << new_x1 << "," << new_y1 << ") to (" 
+             << new_x2 << "," << new_y2 << ")" << endl;
+        
+        // Visual representation
+        cout << "\nVisual representation (ASCII):" << endl;
+        cout << "Original line:  From (" << x1 << "," << y1 << ") to (" << x2 << "," << y2 << ")" << endl;
+        cout << "Clipped line:   From (" << new_x1 << "," << new_y1 << ") to (" << new_x2 << "," << new_y2 << ")" << endl;
+    } else {
+        cout << "Line is completely outside the clipping window" << endl;
+    }
+}
+
+// Additional test cases
+void testLiangBarsky() {
+    cout << "\n=== TEST CASE 1: Line partially inside ===" << endl;
+    liangBarsky(1, 1, 5, 5);
+    
+    cout << "\n=== TEST CASE 2: Line completely inside ===" << endl;
+    liangBarsky(2.5, 2.5, 3.5, 3.5);
+    
+    cout << "\n=== TEST CASE 3: Line completely outside ===" << endl;
+    liangBarsky(0, 0, 1, 1);
+    
+    cout << "\n=== TEST CASE 4: Line intersecting only one edge ===" << endl;
+    liangBarsky(1, 3, 3, 1);
+    
+    cout << "\n=== TEST CASE 5: Horizontal line ===" << endl;
+    liangBarsky(1, 3, 5, 3);
+    
+    cout << "\n=== TEST CASE 6: Vertical line ===" << endl;
+    liangBarsky(3, 1, 3, 5);
+}
+
+int main() {
+    // Original test case
+    liangBarsky(1, 1, 5, 5);
+    
+    // Uncomment to run all test cases
+    // testLiangBarsky();
+    
+    return 0;
+}
+
+
+
+// To implement the various 2D transformations like translation, scaling, rotation, shearing.
+// Write a C-program for performing the basic transformations such as translation, Scaling, Rotation for a given 3D object.
+
+#include <GL/freeglut.h>
+#include <cmath>
+
+// Original triangle
+float x[3] = { -0.3, 0.3, 0.0 };
+float y[3] = { -0.3, -0.3, 0.3 };
+
+// Transformed triangle
+float tx[3], ty[3];
+
+void drawTriangle(float a[], float b[], float r, float g, float bl) {
+    glColor3f(r, g, bl);
+    glBegin(GL_TRIANGLES);
+    for(int i = 0; i < 3; i++)
+        glVertex2f(a[i], b[i]);
+    glEnd();
+}
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Original triangle (white)
+    drawTriangle(x, y, 1, 1, 1);
+
+    // Transformed triangle (red)
+    drawTriangle(tx, ty, 1, 0, 0);
+
+    glFlush();
+}
+
+// Copy original → transformed
+void reset() {
+    for(int i = 0; i < 3; i++) {
+        tx[i] = x[i];
+        ty[i] = y[i];
+    }
+}
+
+// Keyboard controls
+void keyboard(unsigned char key, int, int) {
+
+    switch(key) {
+
+    case 't': // Translation
+        for(int i = 0; i < 3; i++) {
+            tx[i] += 0.2;
+            ty[i] += 0.2;
+        }
+        break;
+
+    case 's': // Scaling
+        for(int i = 0; i < 3; i++) {
+            tx[i] *= 1.5;
+            ty[i] *= 1.5;
+        }
+        break;
+
+    case 'r': // Rotation
+        {
+            float angle = 30 * 3.1416 / 180;
+            for(int i = 0; i < 3; i++) {
+                float x_new = tx[i]*cos(angle) - ty[i]*sin(angle);
+                float y_new = tx[i]*sin(angle) + ty[i]*cos(angle);
+                tx[i] = x_new;
+                ty[i] = y_new;
+            }
+        }
+        break;
+
+    case 'h': // Shearing (X-direction)
+        for(int i = 0; i < 3; i++) {
+            tx[i] = tx[i] + 0.5 * ty[i];
+        }
+        break;
+
+    case 'c': // Reset
+        reset();
+        break;
+    }
+
+    glutPostRedisplay();
+}
+
+void init() {
+    glClearColor(0, 0, 0, 1);
+    gluOrtho2D(-1, 1, -1, 1);
+    reset();
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("2D Transformations");
+
+    init();
+    glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
+
+    glutMainLoop();
+    return 0;
+}
+
+// input: try pressing t, h, r, s, c on keyboard
+
+
+
+
+
+// Write a graphics program to display lines (parallel and 
+//    perpendicular to each other), concentric circles, etc
+
+#include <GL/freeglut.h>
+#include <cmath>
+
+// Draw parallel lines
+void drawParallelLines() {
+    glColor3f(1, 0, 0); // Red
+
+    glBegin(GL_LINES);
+    // Horizontal parallel lines
+    glVertex2f(-0.9, 0.6);
+    glVertex2f(0.9, 0.6);
+
+    glVertex2f(-0.9, 0.4);
+    glVertex2f(0.9, 0.4);
+
+    glVertex2f(-0.9, 0.2);
+    glVertex2f(0.9, 0.2);
+    glEnd();
+}
+
+// Draw perpendicular lines
+void drawPerpendicularLines() {
+    glColor3f(0, 1, 0); // Green
+
+    glBegin(GL_LINES);
+    // Vertical line
+    glVertex2f(0.0, -0.9);
+    glVertex2f(0.0, 0.9);
+
+    // Horizontal line
+    glVertex2f(-0.9, 0.0);
+    glVertex2f(0.9, 0.0);
+    glEnd();
+}
+
+// Draw concentric circles
+void drawCircle(float r) {
+    glBegin(GL_LINE_LOOP);
+    for (int i = 0; i < 360; i++) {
+        float angle = i * 3.1416 / 180;
+        glVertex2f(r * cos(angle), r * sin(angle));
+    }
+    glEnd();
+}
+
+void drawConcentricCircles() {
+    glColor3f(0, 0.5, 1); // Blue
+
+    for (float r = 0.1; r <= 0.5; r += 0.1) {
+        drawCircle(r);
+    }
+}
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    drawParallelLines();
+    drawPerpendicularLines();
+    drawConcentricCircles();
+
+    glFlush();
+}
+
+void init() {
+    glClearColor(0, 0, 0, 1);
+    gluOrtho2D(-1, 1, -1, 1);
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Lines and Circles");
+
+    init();
+    glutDisplayFunc(display);
+    glutMainLoop();
+
+    return 0;
+}
+
+
